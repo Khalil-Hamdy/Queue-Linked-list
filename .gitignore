@@ -1,32 +1,92 @@
-# Prerequisites
-*.d
+#include<iostream>
+#include<string>
+#include<malloc.h>
+#define null 0
+using namespace std;
+template<typename T>
+class queue
+{
+private:
+    struct node
+    {
+        T value;
+        node* next;
+    };
+    typedef node* ptr;
+    ptr new_node()
+    {
+        ptr p = (ptr)malloc(sizeof(node));
+        return p;
+    }
+    ptr list;
+    int siz;
+public:
+    queue()
+    {
+        list=null;
+        siz=0;
+    }
+    void push(T v)
+    {
+        ptr l = list;
+        ptr p = new_node();
+        p->value = v;
+        if(list==null)
+        {
+            p->next = list;
+            list = p;
+            return ;
+        }
+        while (l->next != null)
+        {
+            l = l->next;
+        }
+        l->next = p;
+        p->next = null;
+        siz++;
+    }
+    void pop()
+    {
+        if(isEmpty())
+        {
+            cout<<"queue is Empty\n";
+            return;
+        }
+        ptr l = list;
+        list = l->next;
+        free(l);
+        siz--;
+    }
+    void show()
+    {
+        if(isEmpty())
+        {
+            cout<<"queue is Empty!\n";
+            return;
+        }
+        ptr l = list;
+        while (l->next != null)
+        {
+            cout << l->value<<" ";
+            l = l->next;
+        }
+        cout<<l->value<<endl;
+    }
+    int getSize()
+    {
+        return siz;
+    }
+    bool isEmpty()
+    {
+        return list==null;
+    }
+};
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
+int main()
+{
+    queue<int>q;
+    q.push(5);
+    q.push(4);
+    q.show();
+    return 0;
+}
